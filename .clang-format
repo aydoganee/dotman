@@ -6,7 +6,7 @@ UseTab: Never
 
 ColumnLimit: 100
 
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Attach
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
