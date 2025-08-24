@@ -11,7 +11,7 @@ CFLAGS := -std=c17 -pedantic -Wall -Wextra -Werror -Wformat=2 -Wformat-security 
 
 SECURITY_FLAGS := -D_FORTIFY_SOURCE=2 -fstack-protector-strong -fstack-clash-protection -fcf-protection
 
-DEBUG_FLAGS := -O0 -DDEBUG -fsanitize=address -fsanitize=undefined
+DEBUG_FLAGS := -O1 -DDEBUG -fsanitize=address -fsanitize=undefined
 
 RELEASE_FLAGS := -O3 -DNDEBUG
 
