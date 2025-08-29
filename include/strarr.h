@@ -2,6 +2,7 @@
 #define STRARR_H
 
 #include <stddef.h>
+#define INITIAL_CAPACITY 10
 
 typedef struct {
     char **data;
@@ -9,7 +10,7 @@ typedef struct {
     size_t capacity;
 } StrArr;
 
-StrArr *strarr_create(size_t initial_capacity);
+StrArr *strarr_create();
 void    strarr_destroy(StrArr *arr);
 
 int   strarr_add(StrArr *arr, const char *str);
