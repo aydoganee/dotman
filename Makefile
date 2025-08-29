@@ -2,7 +2,7 @@
 
 CC := gcc
 
-CFLAGS := -std=c17 -pedantic -Wall -Wextra -Werror -Wformat=2 -Wformat-security -Wnull-dereference \
+CFLAGS := -std=c23 -pedantic -Wall -Wextra -Werror -Wformat=2 -Wformat-security -Wnull-dereference \
        -Wstack-protector -Warray-bounds=2 -Wimplicit-fallthrough=3 -Wtraditional-conversion \
        -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wstrict-overflow=2 \
        -Wstringop-overflow=4 -Winit-self -Wlogical-op -Wduplicated-cond -Wduplicated-branches \
@@ -31,7 +31,7 @@ all: debug
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(TARGET)
 
-release: CFLAGS = -std=c17 -pedantic -Wall -Wextra -Werror $(SECURITY_FLAGS) $(RELEASE_FLAGS)
+release: CFLAGS = -std=c23 -pedantic -Wall -Wextra -Werror $(SECURITY_FLAGS) $(RELEASE_FLAGS)
 release: $(TARGET)
 
 $(TARGET): $(OBJECTS)
