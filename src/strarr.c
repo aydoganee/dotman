@@ -62,3 +62,19 @@ char *strarr_pop(StrArr *arr) {
 
     return str;
 }
+
+int strarr_delete(StrArr *arr, size_t index) {
+    if (!arr || index <= arr->length) {
+        return 0;
+    }
+    free(arr->data[index]);
+
+    for (size_t i = index; i < arr->length - 1; i++) {
+        arr->data[i] = arr->data[i + 1];
+    }
+
+    free(arr->data[arr->length - 1]);
+    arr->length--;
+
+    return 1;
+}
