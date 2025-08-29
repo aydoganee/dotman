@@ -1,17 +1,19 @@
 #include "strarr.h"
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 StrArr *strarr_create(size_t initial_capacity) {
     StrArr *arr = malloc(sizeof(StrArr));
     if (!arr) {
-        return NULL;
+        return nullptr;
     }
 
     arr->data = (char **) malloc(sizeof(char *) * initial_capacity);
     if (!arr->data) {
         free(arr);
-        return NULL;
+        return nullptr;
     }
 
     arr->length   = 0;
@@ -26,4 +28,26 @@ void strarr_destroy(StrArr *arr) {
     }
     free((void *) arr->data);
     free(arr);
+}
+
+int strarr_add(StrArr *arr, const char *str) {
+    if (!arr || !str) {
+        return 0;
+    }
+    if (arr->capacity == arr->length) {
+        size_t new_capacity = arr->capacity * 2;
+        char **new_data     = (char **) realloc((void *) arr->data, sizeof(char *) * new_capacity);
+        if (!new_data) {
+            return 0;
+        }
+        arr->data     = new_data;
+        arr->capacity = new_capacity;
+    }
+
+    arr->data[arr->length] = strdup(str);
+    if (!arr->data[arr->length]) {
+        return 0;
+    }
+    arr->length++;
+    return 1;
 }
