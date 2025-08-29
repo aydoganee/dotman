@@ -19,3 +19,11 @@ StrArr *strarr_create(size_t initial_capacity) {
 
     return arr;
 }
+
+void strarr_destroy(StrArr *arr) {
+    for (size_t i = 0; i < arr->length; i++) {
+        free(arr->data[i]);
+    }
+    free((void *) arr->data);
+    free(arr);
+}
