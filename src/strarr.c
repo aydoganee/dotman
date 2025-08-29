@@ -4,20 +4,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-StrArr *strarr_create(size_t initial_capacity) {
+StrArr *strarr_create() {
     StrArr *arr = malloc(sizeof(StrArr));
     if (!arr) {
         return nullptr;
     }
 
-    arr->data = (char **) malloc(sizeof(char *) * initial_capacity);
+    arr->data = (char **) malloc(sizeof(char *) * INITIAL_CAPACITY);
     if (!arr->data) {
         free(arr);
         return nullptr;
     }
 
     arr->length   = 0;
-    arr->capacity = initial_capacity;
+    arr->capacity = INITIAL_CAPACITY;
 
     return arr;
 }
