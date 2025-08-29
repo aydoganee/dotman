@@ -51,3 +51,14 @@ int strarr_add(StrArr *arr, const char *str) {
     arr->length++;
     return 1;
 }
+
+char *strarr_pop(StrArr *arr) {
+    if (!arr || arr->length == 0) {
+        return nullptr;
+    }
+    arr->length--;
+    char *str = arr->data[arr->length];
+    free(arr->data[arr->length]);
+
+    return str;
+}
