@@ -64,7 +64,7 @@ char *strarr_pop(StrArr *arr) {
 }
 
 int strarr_delete(StrArr *arr, size_t index) {
-    if (!arr || index <= arr->length) {
+    if (!arr || index >= arr->length) {
         return 0;
     }
     free(arr->data[index]);
@@ -73,7 +73,6 @@ int strarr_delete(StrArr *arr, size_t index) {
         arr->data[i] = arr->data[i + 1];
     }
 
-    free(arr->data[arr->length - 1]);
     arr->length--;
 
     return 1;
