@@ -19,6 +19,10 @@ StrArr *strarr_create() {
     arr->length   = 0;
     arr->capacity = INITIAL_CAPACITY;
 
+    arr->add    = strarr_add_fn;
+    arr->delete = strarr_delete_fn;
+    arr->pop    = strarr_pop_fn;
+
     return arr;
 }
 
@@ -30,7 +34,7 @@ void strarr_destroy(StrArr *arr) {
     free(arr);
 }
 
-int strarr_add(StrArr *arr, const char *str) {
+int strarr_add_fn(StrArr *arr, const char *str) {
     if (!arr || !str) {
         return 0;
     }
@@ -52,7 +56,7 @@ int strarr_add(StrArr *arr, const char *str) {
     return 1;
 }
 
-char *strarr_pop(StrArr *arr) {
+char *strarr_pop_fn(StrArr *arr) {
     if (!arr || arr->length == 0) {
         return nullptr;
     }
@@ -63,7 +67,7 @@ char *strarr_pop(StrArr *arr) {
     return str;
 }
 
-int strarr_delete(StrArr *arr, size_t index) {
+int strarr_delete_fn(StrArr *arr, size_t index) {
     if (!arr || index >= arr->length) {
         return 0;
     }
