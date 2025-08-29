@@ -57,8 +57,8 @@ char *strarr_pop(StrArr *arr) {
         return nullptr;
     }
     arr->length--;
-    char *str = arr->data[arr->length];
-    free(arr->data[arr->length]);
+    char *str              = arr->data[arr->length];
+    arr->data[arr->length] = nullptr;
 
     return str;
 }
