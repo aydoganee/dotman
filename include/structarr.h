@@ -4,11 +4,14 @@
 #include <stddef.h>
 #define INITIAL_CAPACITY 10
 
-typedef struct StructApp {
+typedef struct StructArr {
     void*  data;
     size_t length;
     size_t capacity;
     size_t element_size;
+    int (*add)(struct StructArr* self, void* element);
+    void* (*pop)(struct StructArr* self);
+    int (*delete)(struct StructArr* self, size_t index);
 } StructArr;
 
 StructArr* structarr_create(size_t element_size);
