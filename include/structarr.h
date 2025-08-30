@@ -1,5 +1,5 @@
-#ifndef STRUCT_H
-#define STRUCT_H
+#ifndef STRUCTARR_H
+#define STRUCTARR_H
 
 #include <stddef.h>
 #define INITIAL_CAPACITY 10
@@ -21,4 +21,4 @@ int   structarr_add_fn(StructArr* arr, void* element);
 void* structarr_pop_fn(StructArr* arr);
 int   structarr_delete_fn(StructArr* arr, size_t index);
 
-#endif  // !STRUCT_H
+#endif
