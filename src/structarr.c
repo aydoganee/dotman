@@ -57,3 +57,13 @@ int structarr_add_fn(StructArr* arr, void* element) {
 
     return 1;
 }
+
+void structarr_pop_fn(StructArr* arr, void* out) {
+    if (!arr || !out || arr->length == 0) {
+        return;
+    }
+    arr->length--;
+    unsigned char* src = (unsigned char*) arr->data + (arr->length * arr->element_size);
+    memcpy(out, src, arr->element_size);
+    memset(src, 0, arr->element_size);
+}
