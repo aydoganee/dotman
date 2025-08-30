@@ -67,3 +67,21 @@ void structarr_pop_fn(StructArr* arr, void* out) {
     memcpy(out, src, arr->element_size);
     memset(src, 0, arr->element_size);
 }
+
+int structarr_delete_fn(StructArr* arr, size_t index) {
+    if (!arr || index >= arr->length) {
+        return 0;
+    }
+    size_t trailing = arr->length - 1 - index;
+    if (trailing > 0) {
+        unsigned char* base = (unsigned char*) arr->data;
+        unsigned char* dest = base + (index * arr->element_size);
+        unsigned char* src  = dest + arr->element_size;
+        memmove(dest, src, trailing * arr->element_size);
+    }
+    arr->length--;
+    unsigned char* last = (unsigned char*) arr->data + (arr->length * arr->element_size);
+    memset(last, 0, arr->element_size);
+
+    return 1;
+}
