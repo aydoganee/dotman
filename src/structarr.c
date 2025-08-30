@@ -1,6 +1,7 @@
 #include "structarr.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 StructArr* structarr_create(size_t element_size) {
     if (element_size == 0) {
@@ -34,4 +35,25 @@ void structarr_destroy(StructArr* arr) {
     }
     free(arr->data);
     free(arr);
+}
+
+int structarr_add_fn(StructArr* arr, void* element) {
+    if (!arr || !element) {
+        return 0;
+    }
+
+    if (arr->capacity == arr->length) {
+        size_t new_capacity = arr->capacity * 2;
+        void*  new_data     = realloc(arr->data, arr->element_size * new_capacity);
+        if (!new_data) {
+            return 0;
+        }
+        arr->data     = new_data;
+        arr->capacity = new_capacity;
+    }
+    memcpy((unsigned char*) arr->data + (arr->length * arr->element_size), element,
+           arr->element_size);
+    arr->length++;
+
+    return 1;
 }
