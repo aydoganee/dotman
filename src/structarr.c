@@ -27,3 +27,11 @@ StructArr* structarr_create(size_t element_size) {
 
     return arr;
 }
+
+void structarr_destroy(StructArr* arr) {
+    if (!arr) {
+        return;
+    }
+    free(arr->data);
+    free(arr);
+}
