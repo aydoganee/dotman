@@ -114,6 +114,15 @@ bool cmd_init(CliCmd* cmd) {
     return true;
 }
 
+bool cmd_sync(CliCmd* cmd) {
+    if (cmd->scp != SCP_NONE) {
+        fprintf(stderr, "Use without scope.\n");
+        return false;
+    }
+    printf("cmd_sync function executed\n");
+    return true;
+}
+
 bool cmd_add(CliCmd* cmd) {
     if (cmd->scp == 0) {
         fprintf(stderr, "Use with a scope");

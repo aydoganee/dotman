@@ -41,6 +41,7 @@ ScpType extract_scp(const char* scp);
 bool cmd_help(CliCmd* cmd);
 bool cmd_version(CliCmd* cmd);
 bool cmd_init(CliCmd* cmd);
+bool cmd_sync(CliCmd* cmd);
 bool cmd_add(CliCmd* cmd);
 bool cmd_delete(CliCmd* cmd);
 bool cmd_list(CliCmd* cmd);
