@@ -156,8 +156,8 @@ bool cmd_backup(CliCmd* cmd) {
     printf("cmd_backup function executed\n");
     return true;
 }
-bool cmd_unkonwn() {
-    fprintf(stderr, "Unkown command.\n");
+bool cmd_unknown() {
+    fprintf(stderr, "Unknown command.\n");
     printf("Check help.\n");
     return true;
 }
@@ -190,7 +190,7 @@ bool execute_cmd(CliCmd* cmd) {
             cmd_backup(cmd);
             break;
         case CMD_UNKNOWN:
-            cmd_unkonwn();
+            cmd_unknown();
             break;
         case CMD_NONE:
             break;

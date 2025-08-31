@@ -46,7 +46,7 @@ bool cmd_add(CliCmd* cmd);
 bool cmd_delete(CliCmd* cmd);
 bool cmd_list(CliCmd* cmd);
 bool cmd_backup(CliCmd* cmd);
-bool cmd_unkonwn();
+bool cmd_unknown();
 
 bool execute_cmd(CliCmd* cmd);
 
