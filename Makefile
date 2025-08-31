@@ -24,7 +24,7 @@ SOURCES := $(wildcard $(SRCDIR)/*.c)
 OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 TARGET := $(BUILDDIR)/dotman
 
-CFLAGS += $(SECURITY_FLAGS) $(DEBUG_FLAGS)
+CFLAGS += $(SECURITY_FLAGS)
 
 all: debug
 
