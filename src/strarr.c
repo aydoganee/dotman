@@ -19,14 +19,17 @@ StrArr *strarr_create() {
     arr->length   = 0;
     arr->capacity = INITIAL_CAPACITY;
 
-    arr->add    = strarr_add_fn;
-    arr->delete = strarr_delete_fn;
-    arr->pop    = strarr_pop_fn;
+    arr->add = strarr_add_fn;
+    arr->del = strarr_del_fn;
+    arr->pop = strarr_pop_fn;
 
     return arr;
 }
 
 void strarr_destroy(StrArr *arr) {
+    if (!arr) {
+        return;
+    }
     for (size_t i = 0; i < arr->length; i++) {
         free(arr->data[i]);
     }
@@ -34,15 +37,15 @@ void strarr_destroy(StrArr *arr) {
     free(arr);
 }
 
-int strarr_add_fn(StrArr *arr, const char *str) {
+bool strarr_add_fn(StrArr *arr, const char *str) {
     if (!arr || !str) {
-        return 0;
+        return false;
     }
     if (arr->capacity == arr->length) {
         size_t new_capacity = arr->capacity * 2;
         char **new_data     = (char **) realloc((void *) arr->data, sizeof(char *) * new_capacity);
         if (!new_data) {
-            return 0;
+            return false;
         }
         arr->data     = new_data;
         arr->capacity = new_capacity;
@@ -50,10 +53,10 @@ int strarr_add_fn(StrArr *arr, const char *str) {
 
     arr->data[arr->length] = strdup(str);
     if (!arr->data[arr->length]) {
-        return 0;
+        return false;
     }
     arr->length++;
-    return 1;
+    return true;
 }
 
 char *strarr_pop_fn(StrArr *arr) {
@@ -67,17 +70,20 @@ char *strarr_pop_fn(StrArr *arr) {
     return str;
 }
 
-int strarr_delete_fn(StrArr *arr, size_t index) {
+bool strarr_del_fn(StrArr *arr, size_t index) {
     if (!arr || index >= arr->length) {
-        return 0;
+        return false;
     }
-    free(arr->data[index]);
 
-    for (size_t i = index; i < arr->length - 1; i++) {
-        arr->data[i] = arr->data[i + 1];
+    free(arr->data[index]);
+    size_t tail = arr->length - index - 1;  // elements after index
+    if (tail) {
+        memmove((void *) arr->data[index], (const void *) arr->data[index + 1],
+                tail * sizeof *arr->data);
     }
 
     arr->length--;
+    arr->data[arr->length] = nullptr;
 
-    return 1;
+    return true;
 }

@@ -22,9 +22,9 @@ StructArr* structarr_create(size_t element_size) {
     arr->capacity     = INITIAL_CAPACITY;
     arr->element_size = element_size;
 
-    arr->add    = structarr_add_fn;
-    arr->pop    = structarr_pop_fn;
-    arr->delete = structarr_delete_fn;
+    arr->add = structarr_add_fn;
+    arr->pop = structarr_pop_fn;
+    arr->del = structarr_del_fn;
 
     return arr;
 }
@@ -37,16 +37,16 @@ void structarr_destroy(StructArr* arr) {
     free(arr);
 }
 
-int structarr_add_fn(StructArr* arr, void* element) {
+bool structarr_add_fn(StructArr* arr, const void* element) {
     if (!arr || !element) {
-        return 0;
+        return false;
     }
 
     if (arr->capacity == arr->length) {
         size_t new_capacity = arr->capacity * 2;
         void*  new_data     = realloc(arr->data, arr->element_size * new_capacity);
         if (!new_data) {
-            return 0;
+            return false;
         }
         arr->data     = new_data;
         arr->capacity = new_capacity;
@@ -55,22 +55,21 @@ int structarr_add_fn(StructArr* arr, void* element) {
            arr->element_size);
     arr->length++;
 
-    return 1;
+    return true;
 }
 
-void structarr_pop_fn(StructArr* arr, void* out) {
+bool structarr_pop_fn(StructArr* arr, void* out) {
     if (!arr || !out || arr->length == 0) {
-        return;
+        return EXIT_FAILURE;
     }
     arr->length--;
-    unsigned char* src = (unsigned char*) arr->data + (arr->length * arr->element_size);
-    memcpy(out, src, arr->element_size);
-    memset(src, 0, arr->element_size);
+    memcpy(out, (unsigned char*) arr->data + (arr->length * arr->element_size), arr->element_size);
+    return EXIT_SUCCESS;
 }
 
-int structarr_delete_fn(StructArr* arr, size_t index) {
+bool structarr_del_fn(StructArr* arr, size_t index) {
     if (!arr || index >= arr->length) {
-        return 0;
+        return false;
     }
     size_t trailing = arr->length - 1 - index;
     if (trailing > 0) {
@@ -80,8 +79,6 @@ int structarr_delete_fn(StructArr* arr, size_t index) {
         memmove(dest, src, trailing * arr->element_size);
     }
     arr->length--;
-    unsigned char* last = (unsigned char*) arr->data + (arr->length * arr->element_size);
-    memset(last, 0, arr->element_size);
 
-    return 1;
+    return true;
 }
