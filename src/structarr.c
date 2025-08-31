@@ -60,11 +60,11 @@ bool structarr_add_fn(StructArr* arr, const void* element) {
 
 bool structarr_pop_fn(StructArr* arr, void* out) {
     if (!arr || !out || arr->length == 0) {
-        return EXIT_FAILURE;
+        return false;
     }
     arr->length--;
     memcpy(out, (unsigned char*) arr->data + (arr->length * arr->element_size), arr->element_size);
-    return EXIT_SUCCESS;
+    return true;
 }
 
 bool structarr_del_fn(StructArr* arr, size_t index) {
