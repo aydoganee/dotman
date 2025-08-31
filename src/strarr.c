@@ -1,5 +1,6 @@
 #include "strarr.h"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,8 +79,8 @@ bool strarr_del_fn(StrArr *arr, size_t index) {
     free(arr->data[index]);
     size_t tail = arr->length - index - 1;  // elements after index
     if (tail) {
-        memmove((void *) arr->data[index], (const void *) arr->data[index + 1],
-                tail * sizeof *arr->data);
+        memmove((void *) &arr->data[index], (const void *) &arr->data[index + 1],
+                tail * sizeof(*arr->data));
     }
 
     arr->length--;
