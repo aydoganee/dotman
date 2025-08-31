@@ -38,7 +38,7 @@ CmdType extract_cmd(const char* cmd) {
     if (!(strcmp("help", cmd))) {
         return CMD_HELP;
     }
-    if (!(strcmp("version", cmd))) {
+    if (!(strcmp("ver", cmd))) {
         return CMD_VERSION;
     }
     if (!(strcmp("init", cmd))) {
@@ -47,7 +47,7 @@ CmdType extract_cmd(const char* cmd) {
     if (!(strcmp("add", cmd))) {
         return CMD_ADD;
     }
-    if (!(strcmp("delete", cmd))) {
+    if (!(strcmp("del", cmd))) {
         return CMD_DELETE;
     }
     if (!(strcmp("list", cmd))) {
@@ -81,10 +81,10 @@ bool cmd_help(CliCmd* cmd) {
 
     printf("Commands:\n");
     printf("  help        Show this help message\n");
-    printf("  version     Show the program version\n");
+    printf("  ver         Show the program version\n");
     printf("  init        Initialize on new system\n");
     printf("  add         Add a new resource (requires subcommand)\n");
-    printf("  delete      Delete a resource (requires subcommand)\n");
+    printf("  del         Delete a resource (requires subcommand)\n");
     printf("  list        List resources (requires subcommand)\n");
     printf("  backup      Backup the dotfile (requires name of dotfile)\n\n");
 
@@ -97,7 +97,7 @@ bool cmd_help(CliCmd* cmd) {
 }
 
 bool cmd_version(CliCmd* cmd) {
-    if (cmd->scp != 0) {
+    if (cmd->scp != SCP_NONE) {
         fprintf(stderr, "Use without scope.\n");
         return false;
     }
@@ -124,7 +124,7 @@ bool cmd_add(CliCmd* cmd) {
 }
 
 bool cmd_delete(CliCmd* cmd) {
-    if (cmd->scp == 0) {
+    if (cmd->scp == SCP_NONE) {
         fprintf(stderr, "Use with a scope");
         return false;
     }
@@ -132,7 +132,7 @@ bool cmd_delete(CliCmd* cmd) {
     return true;
 }
 bool cmd_list(CliCmd* cmd) {
-    if (cmd->scp == 0) {
+    if (cmd->scp == SCP_NONE) {
         printf("cmd_list function executed. Used with no scope");
         return false;
     }
@@ -154,6 +154,10 @@ bool cmd_unkonwn() {
 }
 
 bool execute_cmd(CliCmd* cmd) {
+    if (!cmd) {
+        fprintf(stderr, "No command struct provided.\n");
+        return false;
+    }
     switch (cmd->cmd) {
         case CMD_HELP:
             cmd_help(cmd);
