@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 #include "cli.h"
+#include "strarr.h"
+#include "structarr.h"
 
 bool ensure_capacity(char **buf, size_t *cap, size_t needed) {
     if (!buf || !*buf || !cap) {
@@ -67,7 +69,7 @@ bool parse_line(ConfigLine *line, FILE *file_p) {
                 ensure_capacity(&elm, &elm_cap, ein + 3);
                 if (field[fin] == ',') {
                     elm[ein] = '\0';
-                    line->array.add(&line->array, elm);
+                    line->array->add(line->array, elm);
                     ein = 0;
                     fin++;
                 }
@@ -78,7 +80,7 @@ bool parse_line(ConfigLine *line, FILE *file_p) {
             len    = 0;
             continue;
         }
-        line->fields.add(&line->fields, field);
+        line->fields->add(line->fields, field);
         len = 0;
         chr = fgetc(file_p);
     }
@@ -88,3 +90,58 @@ bool parse_line(ConfigLine *line, FILE *file_p) {
     return true;
 }
 
+bool parse_config(StructArr *lines, const char *file) {
+    if (file == NULL || lines == NULL) {
+        fprintf(stderr, "Error: Null parameter passed to parse_config");
+        return false;
+    }
+
+    FILE *file_p = fopen(file, "r");
+    if (!file_p) {
+        fprintf(stderr, "Error: file error on parse_config");
+        return false;
+    }
+
+    for (;;) {
+        int chr = fgetc(file_p);
+        if (chr == EOF) {
+            break; /* reached end of file */
+        }
+        ungetc(chr, file_p);
+
+        ConfigLine tmp;
+        tmp.fields = strarr_create();
+        tmp.array  = strarr_create();
+        tmp.scp    = 0;
+
+        if (!tmp.fields || !tmp.array) {
+            if (tmp.fields) {
+                strarr_destroy(tmp.fields);
+            }
+            if (tmp.array) {
+                strarr_destroy(tmp.array);
+            }
+            fclose(file_p);
+            return false;
+        }
+
+        if (!parse_line(&tmp, file_p)) {
+            strarr_destroy(tmp.fields);
+            strarr_destroy(tmp.array);
+            fprintf(stderr, "Error: parse_line returned false");
+            fclose(file_p);
+            return false;
+        }
+
+        if (!lines->add(lines, &tmp)) {
+            strarr_destroy(tmp.fields);
+            strarr_destroy(tmp.array);
+            fprintf(stderr, "Error: failed to add ConfigLine to StructArr");
+            fclose(file_p);
+            return false;
+        }
+    }
+
+    fclose(file_p);
+    return true;
+}
