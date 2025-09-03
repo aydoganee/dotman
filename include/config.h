@@ -7,7 +7,8 @@
 #include "cli.h"
 #include "strarr.h"
 
-#define INITAL_FIELD_LEN 128
+#define INIT_FIELD_CAP 64
+#define INIT_ARR_CAP 32
 
 typedef struct ConfigLine {
     ScpType scp;
@@ -16,7 +17,7 @@ typedef struct ConfigLine {
 } ConfigLine;
 
 bool ensure_capacity(char **buf, size_t *cap, size_t needed);
-bool read_file(ConfigLine **lines, FILE *file_p);
+bool parse_line(ConfigLine *line, FILE *file_p);
 bool parse_config(ConfigLine *result, const char *file);
 
 #endif
